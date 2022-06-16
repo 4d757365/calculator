@@ -31,6 +31,11 @@ deleteButton.addEventListener('click', button => {
     cal.updateDisplay();
 })
 
+equalsButton.addEventListener('click', button => {
+    cal.calculate()
+    cal.updateDisplay();
+})
+
 
 class Calculator{
     constructor(previousTextElement, currentTextElement)
@@ -61,6 +66,10 @@ class Calculator{
     operator(operation)
     {
         if(this.current === '') return
+        if(this.previous !== '')
+        {
+            this.calculate();
+        }
         this.operation = operation;
         this.previous = this.current;
         this.current = '';
@@ -68,7 +77,35 @@ class Calculator{
 
     calculate()
     {
+        const a = parseFloat(this.previous);
+        const b = parseFloat(this.current);
+        let result;
+        if(isNaN(a) || isNaN(b))
+        {
+            return;
+        }
+        switch(this.operation)
+        {
+            case '+':
+                result = a + b;
+                break;
+            case '-':
+                result = a - b;
+                break;
+            case '*':
+                result = a * b;
+                break;
+            case '÷':
+                result = a / b;
+                break;
+            default:
+                return;
+        }
 
+        this.current = result;
+        this.operation = undefined;
+        this.previous = '';
+        
     }
 
     updateDisplay()
